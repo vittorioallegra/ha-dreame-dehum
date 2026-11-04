@@ -32,7 +32,6 @@ async def async_setup_entry(
 class DreameDehumidifier(DreameDehumEntity, HumidifierEntity):
     """Power, mode and target humidity in one entity."""
 
-    _attr_name = None
     _attr_device_class = HumidifierDeviceClass.DEHUMIDIFIER
 
     def __init__(self, coordinator: DreameDehumCoordinator) -> None:

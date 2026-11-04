@@ -13,7 +13,7 @@ from custom_components.dreame_dehum.const import DOMAIN
 
 from .conftest import FakeCloud, make_entry
 
-DEHUM = "humidifier.test_dehumidifier"
+DEHUM = "humidifier.test_dehumidifier_dehumidifier"
 
 
 async def _setup(hass: HomeAssistant, entry=None):

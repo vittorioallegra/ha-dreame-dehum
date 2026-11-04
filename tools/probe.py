@@ -291,14 +291,21 @@ def cmd_write(cloud: Cloud, args: argparse.Namespace) -> None:
     device = cloud.select(args.did)
     siid, piid = parse_address(args.address)
     value: Any = json.loads(args.value)
-    current = (cloud.read([(siid, piid)]) or {}).get((siid, piid))
-    print(f"{device.get('model')} {siid}/{piid} is now {redact_value(current)!r}.")
+    # Watch every known property, so side effects of the write show up too.
+    addresses = sorted({*(_known_addresses(args.report) if Path(args.report).exists() else []), (siid, piid)})
+    before = cloud.read_many(addresses)
+    print(f"{device.get('model')} {siid}/{piid} is now {redact_value(before.get((siid, piid)))!r}.")
     if input(f"Write {value!r} to {siid}/{piid}? [y/N] ").strip().lower() != "y":
         sys.exit("Nothing written.")
     result = cloud.command("set_properties", [{"did": cloud.did, "siid": siid, "piid": piid, "value": value}])
     print(f"  reply: {json.dumps(result)}")
     time.sleep(3)
-    print(f"  read back: {redact_value((cloud.read([(siid, piid)]) or {}).get((siid, piid)))!r}")
+    after = {**before, **cloud.read_many(addresses)}
+    changes = [k for k in addresses if k in before and before[k] != after[k]]
+    for s, p in changes:
+        print(f"  {s}/{p}: {redact_value(before[(s, p)])} -> {redact_value(after[(s, p)])}")
+    if not changes:
+        print("  nothing changed")
 
 
 def main() -> None:
@@ -322,6 +329,7 @@ def main() -> None:
     write.add_argument("--did", required=True)
     write.add_argument("address", help="siid/piid, for example 2/5")
     write.add_argument("value", help="JSON value, for example 55 or true")
+    write.add_argument("--report", default="sweep-report.json", help="sweep report with the properties to watch")
     args = parser.parse_args()
 
     cloud = Cloud(args.region)

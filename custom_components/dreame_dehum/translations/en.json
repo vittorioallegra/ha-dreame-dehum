@@ -65,6 +65,7 @@
   "entity": {
     "humidifier": {
       "dehumidifier": {
+        "name": "Dehumidifier",
         "state_attributes": {
           "mode": {
             "state": {
