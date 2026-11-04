@@ -68,7 +68,9 @@ async def test_device_info(hass: HomeAssistant, cloud: FakeCloud) -> None:
     from homeassistant.helpers import device_registry as dr
 
     entry = await _setup(hass)
-    device = dr.async_get(hass).async_get_device_by_identifier((DOMAIN, "123456789"), entry.entry_id)
+    # The lookup by entry works on every supported Home Assistant version.
+    (device,) = dr.async_entries_for_config_entry(dr.async_get(hass), entry.entry_id)
+    assert (DOMAIN, "123456789") in device.identifiers
     assert device.model == "DD20"
     assert device.model_id == "dreame.dehum.u2512"
     assert device.sw_version == "1.0.0_0001"
