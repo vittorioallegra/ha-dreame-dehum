@@ -1,0 +1,4 @@
+# Home Assistant itself comes with pytest-homeassistant-custom-component.
+pytest-homeassistant-custom-component
+ruff
+mypy

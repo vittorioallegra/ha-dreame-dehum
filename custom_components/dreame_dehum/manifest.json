@@ -1,0 +1,14 @@
+{
+  "domain": "dreame_dehum",
+  "name": "Dreame Dehumidifier",
+  "codeowners": ["@vittorioallegra"],
+  "config_flow": true,
+  "dependencies": [],
+  "documentation": "https://github.com/vittorioallegra/ha-dreame-dehum",
+  "integration_type": "device",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/vittorioallegra/ha-dreame-dehum/issues",
+  "loggers": ["custom_components.dreame_dehum"],
+  "requirements": [],
+  "version": "0.1.0"
+}

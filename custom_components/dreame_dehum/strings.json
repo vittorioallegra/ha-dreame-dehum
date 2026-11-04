@@ -1,0 +1,141 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Sign in to Dreamehome",
+        "description": "Use the email and password of your Dreamehome account. The integration works through Dreame's cloud, so it needs internet access.\n\n**Sign in to Dreamehome with Google or Apple?** Those can't be used here. Add a password to your account first: in the Dreamehome app, open **Profile → Settings → Account and Security** and set a password.",
+        "data": {
+          "username": "Email",
+          "password": "Password",
+          "region": "Region"
+        },
+        "data_description": {
+          "region": "The region your Dreamehome account was created in."
+        }
+      },
+      "device": {
+        "title": "Choose a dehumidifier",
+        "data": {
+          "did": "Dehumidifier"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Sign in again",
+        "description": "Dreame rejected the saved password for {username}. Enter the current one.",
+        "data": {
+          "password": "Password"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Dreame rejected the email or password. Check the region too. After several failed attempts Dreame may block sign-in for about an hour.",
+      "cannot_connect": "Couldn't reach Dreame's cloud. Try again in a moment."
+    },
+    "abort": {
+      "already_configured": "This dehumidifier is already set up.",
+      "no_devices": "No dehumidifiers that aren't already set up were found on this account.",
+      "reauth_successful": "Signed in again."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Dreame Dehumidifier options",
+        "data": {
+          "scan_interval": "Update interval"
+        },
+        "data_description": {
+          "scan_interval": "How often to read the dehumidifier. Shorter intervals mean more requests to Dreame's cloud."
+        }
+      }
+    }
+  },
+  "selector": {
+    "region": {
+      "options": {
+        "eu": "Europe",
+        "us": "Americas",
+        "sg": "Asia-Pacific",
+        "ru": "Russia",
+        "kr": "South Korea",
+        "cn": "Mainland China"
+      }
+    }
+  },
+  "entity": {
+    "humidifier": {
+      "dehumidifier": {
+        "state_attributes": {
+          "mode": {
+            "state": {
+              "auto": "Auto",
+              "sleep": "Sleep",
+              "dry": "Dry",
+              "custom": "Custom"
+            }
+          }
+        }
+      }
+    },
+    "select": {
+      "fan_speed": {
+        "name": "Fan speed",
+        "state": {
+          "low": "Low",
+          "high": "High"
+        }
+      }
+    },
+    "switch": {
+      "auto_air_dry": {
+        "name": "Auto air drying"
+      },
+      "child_lock": {
+        "name": "Child lock"
+      },
+      "key_tone": {
+        "name": "Key tone"
+      },
+      "plasma": {
+        "name": "Plasma"
+      },
+      "swing": {
+        "name": "Swing"
+      }
+    },
+    "binary_sensor": {
+      "air_drying": {
+        "name": "Air drying"
+      },
+      "timer_on": {
+        "name": "Timer"
+      }
+    },
+    "sensor": {
+      "humidity": {
+        "name": "Humidity"
+      },
+      "temperature": {
+        "name": "Temperature"
+      },
+      "air_dry_remaining": {
+        "name": "Air drying remaining"
+      },
+      "air_dry_duration": {
+        "name": "Air drying duration"
+      },
+      "timer_hours": {
+        "name": "Timer hours"
+      },
+      "unknown_property": {
+        "name": "Property {address}"
+      }
+    }
+  },
+  "issues": {
+    "unsupported_model": {
+      "title": "{name} isn't supported yet",
+      "description": "Dreame Dehumidifier doesn't have a profile for the model {model} yet, so it hasn't created any entities. Sending commands meant for other models can upset some devices, so it won't guess.\n\nTo help add support, map the model with tools/probe.py and open an issue on GitHub with the reports."
+    }
+  }
+}

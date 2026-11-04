@@ -1,0 +1,141 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Accedi a Dreamehome",
+        "description": "Usa l'email e la password del tuo account Dreamehome. L'integrazione passa dal cloud Dreame, quindi serve l'accesso a internet.\n\n**Accedi a Dreamehome con Google o Apple?** Qui non si possono usare. Aggiungi prima una password all'account: nell'app Dreamehome apri **Profilo → Impostazioni → Account e sicurezza** e imposta una password.",
+        "data": {
+          "username": "Email",
+          "password": "Password",
+          "region": "Regione"
+        },
+        "data_description": {
+          "region": "La regione in cui è stato creato il tuo account Dreamehome."
+        }
+      },
+      "device": {
+        "title": "Scegli un deumidificatore",
+        "data": {
+          "did": "Deumidificatore"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Accedi di nuovo",
+        "description": "Dreame ha rifiutato la password salvata per {username}. Inserisci quella attuale.",
+        "data": {
+          "password": "Password"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Dreame ha rifiutato email o password. Controlla anche la regione. Dopo vari tentativi falliti Dreame può bloccare l'accesso per circa un'ora.",
+      "cannot_connect": "Impossibile raggiungere il cloud Dreame. Riprova tra poco."
+    },
+    "abort": {
+      "already_configured": "Questo deumidificatore è già configurato.",
+      "no_devices": "Nell'account non ci sono deumidificatori non ancora configurati.",
+      "reauth_successful": "Accesso eseguito di nuovo."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Opzioni Dreame Dehumidifier",
+        "data": {
+          "scan_interval": "Intervallo di aggiornamento"
+        },
+        "data_description": {
+          "scan_interval": "Ogni quanto leggere il deumidificatore. Intervalli più brevi significano più richieste al cloud Dreame."
+        }
+      }
+    }
+  },
+  "selector": {
+    "region": {
+      "options": {
+        "eu": "Europa",
+        "us": "Americhe",
+        "sg": "Asia-Pacifico",
+        "ru": "Russia",
+        "kr": "Corea del Sud",
+        "cn": "Cina continentale"
+      }
+    }
+  },
+  "entity": {
+    "humidifier": {
+      "dehumidifier": {
+        "state_attributes": {
+          "mode": {
+            "state": {
+              "auto": "Automatica",
+              "sleep": "Notte",
+              "dry": "Asciugatura",
+              "custom": "Personalizzata"
+            }
+          }
+        }
+      }
+    },
+    "select": {
+      "fan_speed": {
+        "name": "Velocità ventola",
+        "state": {
+          "low": "Bassa",
+          "high": "Alta"
+        }
+      }
+    },
+    "switch": {
+      "auto_air_dry": {
+        "name": "Asciugatura automatica allo spegnimento"
+      },
+      "child_lock": {
+        "name": "Blocco bambini"
+      },
+      "key_tone": {
+        "name": "Suono tasti"
+      },
+      "plasma": {
+        "name": "Plasma"
+      },
+      "swing": {
+        "name": "Oscillazione"
+      }
+    },
+    "binary_sensor": {
+      "air_drying": {
+        "name": "Asciugatura interna"
+      },
+      "timer_on": {
+        "name": "Timer"
+      }
+    },
+    "sensor": {
+      "humidity": {
+        "name": "Umidità"
+      },
+      "temperature": {
+        "name": "Temperatura"
+      },
+      "air_dry_remaining": {
+        "name": "Asciugatura interna rimanente"
+      },
+      "air_dry_duration": {
+        "name": "Durata asciugatura interna"
+      },
+      "timer_hours": {
+        "name": "Ore timer"
+      },
+      "unknown_property": {
+        "name": "Proprietà {address}"
+      }
+    }
+  },
+  "issues": {
+    "unsupported_model": {
+      "title": "{name} non è ancora supportato",
+      "description": "Dreame Dehumidifier non ha ancora un profilo per il modello {model}, quindi non ha creato entità. Inviare comandi pensati per altri modelli può creare problemi ad alcuni dispositivi, quindi non tira a indovinare.\n\nPer aiutare ad aggiungerlo, mappa il modello con tools/probe.py e apri una issue su GitHub con i report."
+    }
+  }
+}
