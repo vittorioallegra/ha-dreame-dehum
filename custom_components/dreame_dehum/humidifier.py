@@ -51,6 +51,9 @@ class DreameDehumidifier(DreameDehumEntity, HumidifierEntity):
         if target and target.values:
             self._attr_min_humidity = min(target.values)
             self._attr_max_humidity = max(target.values)
+            # The unit only takes multiples of 5; scripts may still send other values,
+            # which device.snap_humidity rounds.
+            self._attr_target_humidity_step = profile.humidity_step
         current = profile.of_kind(Kind.HUMIDITY)
         self._current_key = current[0].key if current else None
 

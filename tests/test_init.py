@@ -36,6 +36,7 @@ async def test_setup_creates_entities(hass: HomeAssistant, cloud: FakeCloud) -> 
     assert state.attributes["available_modes"] == ["auto", "sleep", "dry", "custom"]
     assert state.attributes["min_humidity"] == 30
     assert state.attributes["max_humidity"] == 80
+    assert state.attributes["target_humidity_step"] == 5
     assert "action" not in state.attributes
 
     assert hass.states.get("sensor.test_dehumidifier_temperature").state == "20"

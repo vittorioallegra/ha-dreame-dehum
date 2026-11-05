@@ -87,6 +87,9 @@ ON_OFF = frozenset({0, 1})
 
 # Dreame DD20 (dreame.dehum.u2512), firmware 1.7.50_0002.
 #
+# Writes confirmed on a real unit from Home Assistant: every property marked
+# writable below. The target humidity is rounded to a multiple of 5 by the unit.
+#
 # Mapped on a real unit with tools/probe.py: a read-only sweep of siid 1-12 /
 # piid 1-40 (siid 8-12 don't exist), then one change at a time in the
 # Dreamehome app. Not read: 7/3, a text field holding the place name set in the

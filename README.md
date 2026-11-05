@@ -9,7 +9,7 @@ Not affiliated with Dreame.
 
 | Model | ID | Status |
 |---|---|---|
-| DD20 | `dreame.dehum.u2512` | Reads mapped on a real unit; writes not yet confirmed |
+| DD20 | `dreame.dehum.u2512` | Reads and writes confirmed on a real unit |
 
 Other Dreame dehumidifiers can be added from the account, but they get no
 entities until they have a profile: sending one model's commands to another can
