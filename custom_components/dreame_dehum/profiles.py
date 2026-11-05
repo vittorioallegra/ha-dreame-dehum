@@ -31,6 +31,7 @@ class Kind(StrEnum):
     SWITCH = "switch"
     SELECT = "select"
     INFO = "info"  # device registry only, no entity
+    NUMBER = "number"
     UNKNOWN = "unknown"  # read but not understood yet; shown as a raw diagnostic
 
 
@@ -102,9 +103,10 @@ ON_OFF = frozenset({0, 1})
 # put back. A full tank wasn't tested, and other non-zero values (a fault code)
 # are possible, so any non-zero value is shown as an alert.
 #
-# The off timer moves 7/1, 7/2 and 7/4 together (0 -> 1 for one hour), so which
-# one sets it is unknown: 7/1 is shown as "timer on", 7/2 as the timer hours,
-# 7/4 as an unknown property.
+# The timer is set by writing its hours (1-12, the app's range) to 7/2: the
+# unit then raises 7/1 (timer on) and 7/4 (a mirror of the hours) itself. Writing
+# 7/4 is refused (code -4003). Writing 7/1 = 0 cancels the timer; writing 7/1 = 1
+# only starts a 1 hour timer, so 7/1 accepts 0 only and the hours go through 7/2.
 DD20_AUTO, DD20_SLEEP, DD20_DRY, DD20_CUSTOM = 0, 1, 2, 3
 
 DD20 = Profile(
@@ -132,14 +134,13 @@ DD20 = Profile(
         Prop("temperature", 3, 3, Kind.SENSOR),
         Prop("key_tone", 4, 1, Kind.SWITCH, values=ON_OFF),
         Prop("child_lock", 5, 1, Kind.SWITCH, values=ON_OFF),
-        Prop("timer_on", 7, 1, Kind.BINARY_SENSOR),
-        Prop("timer_hours", 7, 2, Kind.SENSOR),
+        Prop("timer_on", 7, 1, Kind.BINARY_SENSOR, values=frozenset({0})),
+        Prop("timer_hours", 7, 2, Kind.NUMBER, values=frozenset(range(1, 13))),
         Prop("plasma", 7, 6, Kind.SWITCH, values=ON_OFF),
         Prop("swing", 7, 7, Kind.SWITCH, values=ON_OFF),
         Prop("air_dry_duration", 7, 8, Kind.SENSOR),
         Prop("serial", 1, 5, Kind.INFO),
         Prop("unknown_6_4", 6, 4, Kind.UNKNOWN),
-        Prop("unknown_7_4", 7, 4, Kind.UNKNOWN),
         Prop("unknown_7_5", 7, 5, Kind.UNKNOWN),
     ),
     manual_mode=DD20_CUSTOM,

@@ -49,9 +49,6 @@ DESCRIPTIONS: dict[str, SensorEntityDescription] = {
             suggested_unit_of_measurement=UnitOfTime.MINUTES,
             entity_category=_D,
         ),
-        SensorEntityDescription(
-            key="timer_hours", device_class=SensorDeviceClass.DURATION, native_unit_of_measurement=UnitOfTime.HOURS
-        ),
     )
 }
 

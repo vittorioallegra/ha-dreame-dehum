@@ -112,7 +112,7 @@
         "name": "Allarme serbatoio"
       },
       "timer_on": {
-        "name": "Timer"
+        "name": "Timer attivo"
       }
     },
     "sensor": {
@@ -128,11 +128,13 @@
       "air_dry_duration": {
         "name": "Durata asciugatura interna"
       },
-      "timer_hours": {
-        "name": "Ore timer"
-      },
       "unknown_property": {
         "name": "Proprietà {address}"
+      }
+    },
+    "number": {
+      "timer_hours": {
+        "name": "Timer"
       }
     }
   },

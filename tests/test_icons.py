@@ -19,7 +19,12 @@ def test_every_mode_has_an_icon() -> None:
 
 
 def test_every_switch_select_and_binary_sensor_has_an_icon() -> None:
-    platforms = {Kind.SWITCH: "switch", Kind.SELECT: "select", Kind.BINARY_SENSOR: "binary_sensor"}
+    platforms = {
+        Kind.SWITCH: "switch",
+        Kind.SELECT: "select",
+        Kind.BINARY_SENSOR: "binary_sensor",
+        Kind.NUMBER: "number",
+    }
     for profile in PROFILES:
         for prop in profile.props:
             if prop.kind in platforms:

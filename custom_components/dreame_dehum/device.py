@@ -66,6 +66,14 @@ class DreameDevice:
         written["fan_speed"] = speed
         return written
 
+    async def set_timer(self, hours: int) -> dict[str, Any]:
+        """Set the timer to a number of hours, or cancel it with 0."""
+        if hours == 0:
+            await self.write("timer_on", 0)
+            return {"timer_on": 0, "timer_hours": 0}
+        await self.write("timer_hours", hours)
+        return {"timer_on": 1, "timer_hours": hours}
+
     def snap_humidity(self, humidity: float) -> int:
         """Round a target humidity to the nearest value the model accepts."""
         values = sorted(self.profile.prop("target_humidity").values or ())  # type: ignore[union-attr]

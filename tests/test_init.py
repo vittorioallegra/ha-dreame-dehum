@@ -57,6 +57,23 @@ async def test_tank_alert(hass: HomeAssistant, cloud: FakeCloud) -> None:
     assert state.attributes["device_class"] == "problem"
 
 
+async def test_timer(hass: HomeAssistant, cloud: FakeCloud) -> None:
+    await _setup(hass)
+    timer = "number.test_dehumidifier_timer"
+    state = hass.states.get(timer)
+    assert state.state == "0"
+    assert state.attributes["max"] == 12
+    await hass.services.async_call("number", "set_value", {"entity_id": timer, "value": 3}, blocking=True)
+    assert cloud.writes[-1] == ("set", 7, 2, 3)
+    assert hass.states.get(timer).state == "3"
+    assert hass.states.get("binary_sensor.test_dehumidifier_timer_active").state == "on"
+    await hass.services.async_call("number", "set_value", {"entity_id": timer, "value": 0}, blocking=True)
+    assert cloud.writes[-1] == ("set", 7, 1, 0)
+    assert hass.states.get(timer).state == "0"
+    with pytest.raises(HomeAssistantError):
+        await hass.services.async_call("number", "set_value", {"entity_id": timer, "value": 13}, blocking=True)
+
+
 async def test_location_property_is_never_read(hass: HomeAssistant, cloud: FakeCloud) -> None:
     await _setup(hass)
     # 7/3 holds the place name set in the app.

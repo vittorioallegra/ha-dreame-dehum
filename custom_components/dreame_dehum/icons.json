@@ -81,11 +81,13 @@
       "air_dry_duration": {
         "default": "mdi:timer-cog-outline"
       },
-      "timer_hours": {
-        "default": "mdi:timer-outline"
-      },
       "unknown_property": {
         "default": "mdi:help-circle-outline"
+      }
+    },
+    "number": {
+      "timer_hours": {
+        "default": "mdi:timer-outline"
       }
     }
   }
