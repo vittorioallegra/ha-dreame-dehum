@@ -42,3 +42,5 @@ the HACS action.
   locations in code, tests, fixtures or docs. Probe reports
   (`sweep-*.json`, `learn-*.json`) are gitignored.
 - `strings.json` and `translations/en.json` must stay identical.
+- Releases: bump `version` in `manifest.json` and `pyproject.toml`, then publish
+  a GitHub release tagged `vX.Y.Z` on that commit; HACS shows release names.
