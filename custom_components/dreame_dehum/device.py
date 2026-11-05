@@ -66,6 +66,17 @@ class DreameDevice:
         written["fan_speed"] = speed
         return written
 
+    async def set_air_drying(self, data: dict[str, Any], on: bool) -> dict[str, Any]:
+        """Start or stop the self-drying cycle. It can only start while the unit is on."""
+        if not on:
+            await self.write("air_drying", 0)
+            return {"air_drying": 0, "air_dry_remaining": 0, "air_dry_duration": 0}
+        if not self.is_on(data):
+            raise NotAllowed("Air drying can only be started while the dehumidifier is on")
+        await self.write("air_drying", 1)
+        # What the unit does when the cycle starts: it goes to standby for the 40 minutes.
+        return {"air_drying": 1, "power": self.profile.power_off, "air_dry_duration": 2400, "air_dry_remaining": 2400}
+
     async def set_timer(self, hours: int) -> dict[str, Any]:
         """Set the timer to a number of hours, or cancel it with 0."""
         if hours == 0:

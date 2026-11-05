@@ -29,6 +29,12 @@
       }
     },
     "switch": {
+      "air_drying": {
+        "default": "mdi:hair-dryer",
+        "state": {
+          "off": "mdi:hair-dryer-outline"
+        }
+      },
       "auto_air_dry": {
         "default": "mdi:weather-windy",
         "state": {
@@ -58,9 +64,6 @@
       }
     },
     "binary_sensor": {
-      "air_drying": {
-        "default": "mdi:weather-windy"
-      },
       "tank_alert": {
         "default": "mdi:water-alert",
         "state": {

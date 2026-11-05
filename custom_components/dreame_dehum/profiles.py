@@ -95,9 +95,11 @@ ON_OFF = frozenset({0, 1})
 # Dreamehome app. Not read: 7/3, a text field holding the place name set in the
 # app (location data, of no use here).
 #
-# "Air dry" is the app's self-drying cycle: it powers the unit off (2/1 -> 2),
-# sets 2/10 to 1 and counts 2/7 down from 7/8 seconds (2400 = 40 min). Starting
-# it from the cloud hasn't been mapped, so it is shown but not controllable.
+# "Air drying" is the app's self-drying cycle (40 minutes): writing 1 to 2/10
+# starts it and writing 0 stops it, both confirmed on a real unit. Starting it
+# puts the unit in standby (2/1 -> 2), sets 7/8 to 2400 and counts 2/7 down in
+# seconds. The app only starts it while the unit is on, and the unit stays in
+# standby after a stop.
 #
 # 4/1 is the key tone and 2/6 the "auto air dry on power-off" setting, both
 # under the device settings in the app.
@@ -132,7 +134,7 @@ DD20 = Profile(
         Prop("auto_air_dry", 2, 6, Kind.SWITCH, values=ON_OFF),
         Prop("air_dry_remaining", 2, 7, Kind.SENSOR),
         Prop("tank_alert", 2, 2, Kind.BINARY_SENSOR),
-        Prop("air_drying", 2, 10, Kind.BINARY_SENSOR),
+        Prop("air_drying", 2, 10, Kind.SWITCH, values=ON_OFF),
         Prop("humidity", 3, 2, Kind.HUMIDITY),
         Prop("temperature", 3, 3, Kind.SENSOR),
         Prop("key_tone", 4, 1, Kind.SWITCH, values=ON_OFF),

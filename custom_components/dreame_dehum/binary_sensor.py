@@ -1,4 +1,4 @@
-"""Yes/no states: the self-drying cycle and the off timer."""
+"""Yes/no states: the tank alert and whether the timer is active."""
 
 from __future__ import annotations
 
@@ -13,7 +13,6 @@ from .profiles import Kind
 PARALLEL_UPDATES = 0
 
 _DEVICE_CLASSES = {
-    "air_drying": BinarySensorDeviceClass.RUNNING,
     "tank_alert": BinarySensorDeviceClass.PROBLEM,
     "timer_on": BinarySensorDeviceClass.RUNNING,
 }

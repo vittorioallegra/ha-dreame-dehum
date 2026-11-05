@@ -47,7 +47,7 @@ async def test_setup_creates_entities(hass: HomeAssistant, cloud: FakeCloud) -> 
     assert hass.states.get("switch.test_dehumidifier_key_tone").state == "on"
     assert hass.states.get("switch.test_dehumidifier_auto_air_drying").state == "off"
     assert hass.states.get("select.test_dehumidifier_fan_speed").state == "low"
-    assert hass.states.get("binary_sensor.test_dehumidifier_air_drying").state == "off"
+    assert hass.states.get("switch.test_dehumidifier_air_drying").state == "off"
 
 
 async def test_tank_alert(hass: HomeAssistant, cloud: FakeCloud) -> None:
@@ -56,6 +56,28 @@ async def test_tank_alert(hass: HomeAssistant, cloud: FakeCloud) -> None:
     state = hass.states.get("binary_sensor.test_dehumidifier_water_tank_alert")
     assert state.state == "on"
     assert state.attributes["device_class"] == "problem"
+
+
+async def test_air_drying_start_and_stop(hass: HomeAssistant, cloud: FakeCloud) -> None:
+    await _setup(hass)
+    switch = "switch.test_dehumidifier_air_drying"
+    await hass.services.async_call("switch", "turn_on", {"entity_id": switch}, blocking=True)
+    assert cloud.writes[-1] == ("set", 2, 10, 1)
+    assert hass.states.get(switch).state == "on"
+    assert hass.states.get(DEHUM).state == "off"  # the unit goes to standby for the cycle
+    await hass.services.async_call("switch", "turn_off", {"entity_id": switch}, blocking=True)
+    assert cloud.writes[-1] == ("set", 2, 10, 0)
+    assert hass.states.get(switch).state == "off"
+
+
+async def test_air_drying_needs_the_unit_on(hass: HomeAssistant, cloud: FakeCloud) -> None:
+    cloud.values[(2, 1)] = 2
+    await _setup(hass)
+    with pytest.raises(HomeAssistantError, match="while the dehumidifier is on"):
+        await hass.services.async_call(
+            "switch", "turn_on", {"entity_id": "switch.test_dehumidifier_air_drying"}, blocking=True
+        )
+    assert not cloud.writes
 
 
 async def test_timer(hass: HomeAssistant, cloud: FakeCloud) -> None:

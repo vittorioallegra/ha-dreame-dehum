@@ -16,7 +16,7 @@ from .profiles import Kind
 PARALLEL_UPDATES = 1
 
 # Settings that change what the unit does rather than how it is configured.
-_MAIN = {"plasma", "swing"}
+_MAIN = {"plasma", "swing", "air_drying"}
 
 
 async def async_setup_entry(
@@ -42,7 +42,13 @@ class DreameDehumSwitch(DreameDehumEntity, SwitchEntity):
         return bool(self.raw_value)
 
     async def async_turn_on(self, **kwargs: Any) -> None:
-        await self.coordinator.async_write(self._key, 1)
+        if self._key == "air_drying":
+            await self.coordinator.async_command(self.device.set_air_drying(self.data, True))
+        else:
+            await self.coordinator.async_write(self._key, 1)
 
     async def async_turn_off(self, **kwargs: Any) -> None:
-        await self.coordinator.async_write(self._key, 0)
+        if self._key == "air_drying":
+            await self.coordinator.async_command(self.device.set_air_drying(self.data, False))
+        else:
+            await self.coordinator.async_write(self._key, 0)

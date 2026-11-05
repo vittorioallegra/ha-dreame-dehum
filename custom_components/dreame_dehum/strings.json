@@ -88,6 +88,9 @@
       }
     },
     "switch": {
+      "air_drying": {
+        "name": "Air drying"
+      },
       "auto_air_dry": {
         "name": "Auto air drying"
       },
@@ -105,9 +108,6 @@
       }
     },
     "binary_sensor": {
-      "air_drying": {
-        "name": "Air drying"
-      },
       "tank_alert": {
         "name": "Water tank alert"
       },
