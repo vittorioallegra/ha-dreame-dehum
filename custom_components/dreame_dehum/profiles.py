@@ -98,6 +98,10 @@ ON_OFF = frozenset({0, 1})
 # 4/1 is the key tone and 2/6 the "auto air dry on power-off" setting, both
 # under the device settings in the app.
 #
+# 2/2 went 0 -> 1 when the water tank was taken out and back to 0 when it was
+# put back. A full tank wasn't tested, and other non-zero values (a fault code)
+# are possible, so any non-zero value is shown as an alert.
+#
 # The off timer moves 7/1, 7/2 and 7/4 together (0 -> 1 for one hour), so which
 # one sets it is unknown: 7/1 is shown as "timer on", 7/2 as the timer hours,
 # 7/4 as an unknown property.
@@ -122,6 +126,7 @@ DD20 = Profile(
         Prop("target_humidity", 2, 5, Kind.TARGET_HUMIDITY, values=frozenset(range(30, 81, 5))),
         Prop("auto_air_dry", 2, 6, Kind.SWITCH, values=ON_OFF),
         Prop("air_dry_remaining", 2, 7, Kind.SENSOR),
+        Prop("tank_alert", 2, 2, Kind.BINARY_SENSOR),
         Prop("air_drying", 2, 10, Kind.BINARY_SENSOR),
         Prop("humidity", 3, 2, Kind.HUMIDITY),
         Prop("temperature", 3, 3, Kind.SENSOR),
@@ -133,7 +138,6 @@ DD20 = Profile(
         Prop("swing", 7, 7, Kind.SWITCH, values=ON_OFF),
         Prop("air_dry_duration", 7, 8, Kind.SENSOR),
         Prop("serial", 1, 5, Kind.INFO),
-        Prop("unknown_2_2", 2, 2, Kind.UNKNOWN),
         Prop("unknown_6_4", 6, 4, Kind.UNKNOWN),
         Prop("unknown_7_4", 7, 4, Kind.UNKNOWN),
         Prop("unknown_7_5", 7, 5, Kind.UNKNOWN),

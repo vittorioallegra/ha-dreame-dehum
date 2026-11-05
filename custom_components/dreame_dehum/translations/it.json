@@ -108,6 +108,9 @@
       "air_drying": {
         "name": "Asciugatura interna"
       },
+      "tank_alert": {
+        "name": "Allarme serbatoio"
+      },
       "timer_on": {
         "name": "Timer"
       }

@@ -49,6 +49,14 @@ async def test_setup_creates_entities(hass: HomeAssistant, cloud: FakeCloud) -> 
     assert hass.states.get("binary_sensor.test_dehumidifier_air_drying").state == "off"
 
 
+async def test_tank_alert(hass: HomeAssistant, cloud: FakeCloud) -> None:
+    cloud.values[(2, 2)] = 1
+    await _setup(hass)
+    state = hass.states.get("binary_sensor.test_dehumidifier_water_tank_alert")
+    assert state.state == "on"
+    assert state.attributes["device_class"] == "problem"
+
+
 async def test_location_property_is_never_read(hass: HomeAssistant, cloud: FakeCloud) -> None:
     await _setup(hass)
     # 7/3 holds the place name set in the app.
@@ -58,7 +66,7 @@ async def test_location_property_is_never_read(hass: HomeAssistant, cloud: FakeC
 async def test_unknown_properties_are_disabled_diagnostics(hass: HomeAssistant, cloud: FakeCloud) -> None:
     await _setup(hass)
     registry = er.async_get(hass)
-    entries = [e for e in registry.entities.values() if e.unique_id.endswith("unknown_2_2")]
+    entries = [e for e in registry.entities.values() if e.unique_id.endswith("unknown_6_4")]
     assert len(entries) == 1
     assert entries[0].disabled_by is er.RegistryEntryDisabler.INTEGRATION
     assert entries[0].entity_category == "diagnostic"

@@ -61,6 +61,12 @@
       "air_drying": {
         "default": "mdi:weather-windy"
       },
+      "tank_alert": {
+        "default": "mdi:water-alert",
+        "state": {
+          "off": "mdi:water-check"
+        }
+      },
       "timer_on": {
         "default": "mdi:timer-outline",
         "state": {

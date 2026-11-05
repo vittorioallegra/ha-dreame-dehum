@@ -24,14 +24,16 @@ upset some Dreame devices, so the integration doesn't guess. See
 | Fan speed (Low, High; switches to Custom first) | `select` | 2/4 |
 | Humidity, temperature | `sensor` | 3/2, 3/3 |
 | Child lock, plasma, swing, key tone, auto air drying on power-off | `switch` | 5/1, 7/6, 7/7, 4/1, 2/6 |
+| Water tank alert (on when the tank is out) | `binary_sensor` | 2/2 |
 | Air drying (self-drying cycle) and its remaining time and duration | `binary_sensor`, `sensor` | 2/10, 2/7, 7/8 |
 | Timer, timer hours | `binary_sensor`, `sensor` | 7/1, 7/2 |
-| Properties not understood yet, as raw values (disabled by default) | `sensor` | 2/2, 6/4, 7/4, 7/5 |
+| Properties not understood yet, as raw values (disabled by default) | `sensor` | 6/4, 7/4, 7/5 |
 
 Known gaps on the DD20:
 
 - **Air drying and the off timer can't be started from Home Assistant yet.**
   Their state is shown; how the app starts them hasn't been mapped.
+- The tank alert was confirmed by taking the tank out; a full tank wasn't tested.
 - No drying/idle state: the unit doesn't report whether its compressor runs.
 - Property 7/3 holds the place name set in the app. It is never read.
 

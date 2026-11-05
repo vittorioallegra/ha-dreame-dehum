@@ -12,7 +12,11 @@ from .profiles import Kind
 
 PARALLEL_UPDATES = 0
 
-_DEVICE_CLASSES = {"air_drying": BinarySensorDeviceClass.RUNNING, "timer_on": BinarySensorDeviceClass.RUNNING}
+_DEVICE_CLASSES = {
+    "air_drying": BinarySensorDeviceClass.RUNNING,
+    "tank_alert": BinarySensorDeviceClass.PROBLEM,
+    "timer_on": BinarySensorDeviceClass.RUNNING,
+}
 
 
 async def async_setup_entry(

@@ -108,6 +108,9 @@
       "air_drying": {
         "name": "Air drying"
       },
+      "tank_alert": {
+        "name": "Water tank alert"
+      },
       "timer_on": {
         "name": "Timer"
       }

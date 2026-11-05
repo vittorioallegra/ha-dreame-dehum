@@ -10,5 +10,5 @@
   "issue_tracker": "https://github.com/vittorioallegra/ha-dreame-dehum/issues",
   "loggers": ["custom_components.dreame_dehum"],
   "requirements": [],
-  "version": "0.1.2"
+  "version": "0.1.3"
 }
