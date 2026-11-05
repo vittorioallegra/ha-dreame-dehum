@@ -1,0 +1,86 @@
+{
+  "entity": {
+    "humidifier": {
+      "dehumidifier": {
+        "default": "mdi:air-humidifier",
+        "state": {
+          "off": "mdi:air-humidifier-off"
+        },
+        "state_attributes": {
+          "mode": {
+            "default": "mdi:circle-medium",
+            "state": {
+              "auto": "mdi:refresh-auto",
+              "sleep": "mdi:power-sleep",
+              "dry": "mdi:tshirt-crew-outline",
+              "custom": "mdi:tune-variant"
+            }
+          }
+        }
+      }
+    },
+    "select": {
+      "fan_speed": {
+        "default": "mdi:fan",
+        "state": {
+          "low": "mdi:fan-speed-1",
+          "high": "mdi:fan-speed-3"
+        }
+      }
+    },
+    "switch": {
+      "auto_air_dry": {
+        "default": "mdi:weather-windy",
+        "state": {
+          "off": "mdi:weather-windy-variant"
+        }
+      },
+      "child_lock": {
+        "default": "mdi:lock",
+        "state": {
+          "off": "mdi:lock-open-variant"
+        }
+      },
+      "key_tone": {
+        "default": "mdi:volume-high",
+        "state": {
+          "off": "mdi:volume-off"
+        }
+      },
+      "plasma": {
+        "default": "mdi:shimmer"
+      },
+      "swing": {
+        "default": "mdi:arrow-oscillating",
+        "state": {
+          "off": "mdi:arrow-oscillating-off"
+        }
+      }
+    },
+    "binary_sensor": {
+      "air_drying": {
+        "default": "mdi:weather-windy"
+      },
+      "timer_on": {
+        "default": "mdi:timer-outline",
+        "state": {
+          "off": "mdi:timer-off-outline"
+        }
+      }
+    },
+    "sensor": {
+      "air_dry_remaining": {
+        "default": "mdi:timer-sand"
+      },
+      "air_dry_duration": {
+        "default": "mdi:timer-cog-outline"
+      },
+      "timer_hours": {
+        "default": "mdi:timer-outline"
+      },
+      "unknown_property": {
+        "default": "mdi:help-circle-outline"
+      }
+    }
+  }
+}

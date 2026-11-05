@@ -36,7 +36,7 @@ async def test_setup_creates_entities(hass: HomeAssistant, cloud: FakeCloud) -> 
     assert state.attributes["available_modes"] == ["auto", "sleep", "dry", "custom"]
     assert state.attributes["min_humidity"] == 30
     assert state.attributes["max_humidity"] == 80
-    assert state.attributes["action"] == "drying"
+    assert "action" not in state.attributes
 
     assert hass.states.get("sensor.test_dehumidifier_temperature").state == "20"
     assert hass.states.get("sensor.test_dehumidifier_humidity").state == "70"
@@ -123,12 +123,6 @@ async def test_switches(hass: HomeAssistant, cloud: FakeCloud) -> None:
         "switch", "turn_on", {"entity_id": "switch.test_dehumidifier_auto_air_drying"}, blocking=True
     )
     assert cloud.writes[-1] == ("set", 2, 6, 1)
-
-
-async def test_idle_below_target(hass: HomeAssistant, cloud: FakeCloud) -> None:
-    cloud.values[(3, 2)] = 40
-    await _setup(hass)
-    assert hass.states.get(DEHUM).attributes["action"] == "idle"
 
 
 async def test_rejected_command_raises(hass: HomeAssistant, cloud: FakeCloud) -> None:

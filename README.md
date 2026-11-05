@@ -32,8 +32,7 @@ Known gaps on the DD20:
 
 - **Air drying and the off timer can't be started from Home Assistant yet.**
   Their state is shown; how the app starts them hasn't been mapped.
-- The humidifier's action (drying/idle) is inferred from the room humidity and
-  the target: the unit doesn't report its compressor state.
+- No drying/idle state: the unit doesn't report whether its compressor runs.
 - Property 7/3 holds the place name set in the app. It is never read.
 
 ## Installation

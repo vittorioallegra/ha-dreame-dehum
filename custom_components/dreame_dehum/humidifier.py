@@ -5,7 +5,6 @@ from __future__ import annotations
 from typing import Any
 
 from homeassistant.components.humidifier import (
-    HumidifierAction,
     HumidifierDeviceClass,
     HumidifierEntity,
     HumidifierEntityFeature,
@@ -30,7 +29,11 @@ async def async_setup_entry(
 
 
 class DreameDehumidifier(DreameDehumEntity, HumidifierEntity):
-    """Power, mode and target humidity in one entity."""
+    """Power, mode and target humidity in one entity.
+
+    No action (drying/idle): the unit doesn't report its compressor state, and
+    an inferred one made the state text too long for the device page row.
+    """
 
     _attr_device_class = HumidifierDeviceClass.DEHUMIDIFIER
 
@@ -68,17 +71,6 @@ class DreameDehumidifier(DreameDehumEntity, HumidifierEntity):
     def current_humidity(self) -> float | None:
         value = self.data.get(self._current_key) if self._current_key else None
         return value if isinstance(value, (int, float)) else None
-
-    @property
-    def action(self) -> HumidifierAction | None:
-        if not self.is_on:
-            return HumidifierAction.OFF
-        # The unit doesn't report its compressor state, so this is inferred:
-        # below the target, a dehumidifier has nothing to do.
-        current, target = self.current_humidity, self.target_humidity
-        if current is not None and target is not None and current < target:
-            return HumidifierAction.IDLE
-        return HumidifierAction.DRYING
 
     async def async_turn_on(self, **kwargs: Any) -> None:
         await self.coordinator.async_command(self.device.set_power(True))
