@@ -104,9 +104,10 @@ ON_OFF = frozenset({0, 1})
 # 4/1 is the key tone and 2/6 the "auto air dry on power-off" setting, both
 # under the device settings in the app.
 #
-# 2/2 went 0 -> 1 when the water tank was taken out and back to 0 when it was
-# put back. A full tank wasn't tested, and other non-zero values (a fault code)
-# are possible, so any non-zero value is shown as an alert.
+# 2/2 is 1 both when the water tank is taken out and when it is full (the app
+# says "full or removed"), and 0 otherwise. While it is 1 the unit stops but
+# stays "on" (2/1 = 1). Other non-zero values (a fault code) are possible, so
+# any non-zero value is shown as an alert.
 #
 # The timer is set by writing its hours (1-12, the app's range) to 7/2: the
 # unit then raises 7/1 (timer on) and 7/4 (a mirror of the hours) itself. Writing

@@ -209,10 +209,10 @@ def cmd_list(cloud: Cloud, _args: argparse.Namespace) -> None:
 
 def cmd_sweep(cloud: Cloud, args: argparse.Namespace) -> None:
     device = cloud.select(args.did)
-    print(f"Sweeping {device.get('model')}: siid 1-{args.max_siid}, piid 1-{args.max_piid}. Reads only.")
+    print(f"Sweeping {device.get('model')}: siid {args.min_siid}-{args.max_siid}, piid 1-{args.max_piid}. Reads only.")
     found: dict[str, Any] = {}
     failed: list[str] = []
-    for siid in range(1, args.max_siid + 1):
+    for siid in range(args.min_siid, args.max_siid + 1):
         for start in range(1, args.max_piid + 1, BATCH):
             batch = [(siid, p) for p in range(start, min(start + BATCH, args.max_piid + 1))]
             result = cloud.read(batch)
@@ -234,7 +234,7 @@ def cmd_sweep(cloud: Cloud, args: argparse.Namespace) -> None:
     report = {
         "model": device.get("model"),
         "firmware": device.get("ver"),
-        "range": {"max_siid": args.max_siid, "max_piid": args.max_piid},
+        "range": {"min_siid": args.min_siid, "max_siid": args.max_siid, "max_piid": args.max_piid},
         "properties": found,
         "timed_out": failed,
         "device_record": redact_record(device),
@@ -315,6 +315,7 @@ def main() -> None:
     sub.add_parser("list", help="list the devices on the account")
     sweep = sub.add_parser("sweep", help="find which properties exist (reads only)")
     sweep.add_argument("--did", required=True)
+    sweep.add_argument("--min-siid", type=int, default=1)
     sweep.add_argument("--max-siid", type=int, default=12)
     sweep.add_argument("--max-piid", type=int, default=40)
     sweep.add_argument("--out", default="sweep-report.json")
