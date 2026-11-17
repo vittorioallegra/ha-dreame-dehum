@@ -3,13 +3,14 @@
 from __future__ import annotations
 
 from homeassistant.config_entries import ConfigEntryState
+from homeassistant.const import STATE_UNAVAILABLE
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers import entity_registry as er, issue_registry as ir
 import pytest
 
 from custom_components.dreame_dehum.api import AuthFailed, CannotConnect, CommandFailed
-from custom_components.dreame_dehum.const import DOMAIN
+from custom_components.dreame_dehum.const import DOMAIN, MAX_FAILED_POLLS
 
 from .conftest import FakeCloud, make_entry
 
@@ -184,6 +185,20 @@ async def test_unreachable_cloud_retries_setup(hass: HomeAssistant, cloud: FakeC
     cloud.read_error = CannotConnect("down")
     entry = await _setup(hass)
     assert entry.state is ConfigEntryState.SETUP_RETRY
+
+
+async def test_short_cloud_outage_keeps_last_values(hass: HomeAssistant, cloud: FakeCloud) -> None:
+    entry = await _setup(hass)
+    coordinator = entry.runtime_data
+    cloud.read_error = CannotConnect("down")
+    for _ in range(MAX_FAILED_POLLS):
+        await coordinator.async_refresh()
+        assert hass.states.get(DEHUM).state != STATE_UNAVAILABLE
+    await coordinator.async_refresh()
+    assert hass.states.get(DEHUM).state == STATE_UNAVAILABLE
+    cloud.read_error = None
+    await coordinator.async_refresh()
+    assert hass.states.get(DEHUM).state != STATE_UNAVAILABLE
 
 
 async def test_rejected_account_starts_reauth(hass: HomeAssistant, cloud: FakeCloud) -> None:

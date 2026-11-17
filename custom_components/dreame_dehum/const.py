@@ -27,5 +27,9 @@ READ_BATCH_SIZE = 8
 # A property missing from this many polls in a row is shown as unavailable.
 MAX_MISSED_POLLS = 2
 
+# A whole poll can fail (cloud timeout, network blip). Entities keep their last
+# values until this many polls in a row have failed.
+MAX_FAILED_POLLS = 3
+
 # The cloud lags a few seconds behind writes; refresh after this delay.
 POST_WRITE_REFRESH = timedelta(seconds=8)

@@ -14,7 +14,14 @@ from homeassistant.helpers.event import async_call_later
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from .api import AuthFailed, CommandFailed, DreameError
-from .const import CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL, DOMAIN, MAX_MISSED_POLLS, POST_WRITE_REFRESH
+from .const import (
+    CONF_SCAN_INTERVAL,
+    DEFAULT_SCAN_INTERVAL,
+    DOMAIN,
+    MAX_FAILED_POLLS,
+    MAX_MISSED_POLLS,
+    POST_WRITE_REFRESH,
+)
 from .device import DreameDevice, NotAllowed
 
 _LOGGER = logging.getLogger(__name__)
@@ -41,16 +48,26 @@ class DreameDehumCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         self.firmware = firmware
         self._cancel_refresh: CALLBACK_TYPE | None = None
         self._misses: dict[str, int] = {}
+        self._failed_polls = 0
 
     async def _async_update_data(self) -> dict[str, Any]:
         try:
             values = await self.device.read_all()
+            if not values:
+                raise DreameError("The dehumidifier didn't report any values")
         except AuthFailed as err:
             raise ConfigEntryAuthFailed(str(err)) from err
         except DreameError as err:
+            # Ride out short cloud hiccups: keep the last values for a few polls
+            # instead of flipping every entity to unavailable.
+            self._failed_polls += 1
+            if self.data and self._failed_polls <= MAX_FAILED_POLLS:
+                _LOGGER.debug(
+                    "Poll failed (%s of %s), keeping last values: %s", self._failed_polls, MAX_FAILED_POLLS, err
+                )
+                return self.data
             raise UpdateFailed(f"Couldn't reach the dehumidifier: {err}") from err
-        if not values:
-            raise UpdateFailed("The dehumidifier didn't report any values")
+        self._failed_polls = 0
         # The cloud sometimes leaves a few properties out of one reply. Keep their
         # last value for a couple of polls so entities don't flicker unavailable.
         for key, value in (self.data or {}).items():
